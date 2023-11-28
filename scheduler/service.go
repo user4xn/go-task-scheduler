@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+//Create Instance
 func NewScheduler() *Scheduler {
 	return &Scheduler{
 		Database:  NewDatabase(),
@@ -16,6 +17,7 @@ func NewScheduler() *Scheduler {
 	}
 }
 
+//Fucntion add task
 func (s *Scheduler) AddTask(taskName string, function func(), executionTime int64, interval time.Duration, isRepeated bool) {
 	taskID := generateRandomID()
 
@@ -34,6 +36,7 @@ func (s *Scheduler) AddTask(taskName string, function func(), executionTime int6
 	fmt.Printf("Task added - ID: %d, Name: %s, Execution Time: %v\n", taskID, taskName, time.Unix(executionTime, 0))
 }
 
+//Fucntion start service scheduler
 func (s *Scheduler) Start() {
 	go func() {
 		for {
@@ -42,8 +45,10 @@ func (s *Scheduler) Start() {
 				return
 			case now := <-time.After(time.Second):
 				s.Database.Lock()
+				//Loop from database
 				for _, task := range s.Database.Tasks {
 					if now.After(time.Unix(task.ExecutionTime, 0)) {
+						//Execute
 						s.scheduleTask(task)
 						if !task.IsRepeated {
 							delete(s.Database.Tasks, task.TaskID)
@@ -56,11 +61,13 @@ func (s *Scheduler) Start() {
 	}()
 }
 
+//Stop Service
 func (s *Scheduler) Stop() {
 	close(s.stopChan)
 	s.waitGroup.Wait()
 }
 
+//Execution Schedule
 func (s *Scheduler) scheduleTask(task *Task) {
 	s.waitGroup.Add(1)
 	go func() {
@@ -88,6 +95,7 @@ func (s *Scheduler) scheduleTask(task *Task) {
 	}()
 }
 
+//Remove task by id
 func (s *Scheduler) removeTask(taskID int) {
 	s.Database.Lock()
 	defer s.Database.Unlock()
@@ -97,6 +105,7 @@ func (s *Scheduler) removeTask(taskID int) {
 	fmt.Printf("Task removed - ID: %d\n", taskID)
 }
 
+//Generate random func
 func generateRandomID() int {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(10000)
