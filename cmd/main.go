@@ -12,13 +12,8 @@ import (
 func main() {
 	s := scheduler.NewScheduler()
 
-	// Start the scheduler in a goroutine
-	go s.Start()
-
-	// Run CLI loop
 	cliLoop(s)
 
-	// Stop the scheduler when the CLI loop exits
 	s.Stop()
 }
 
@@ -31,7 +26,8 @@ func cliLoop(s *scheduler.Scheduler) {
 		fmt.Println("1. Add Task")
 		fmt.Println("2. List Tasks")
 		fmt.Println("3. Remove Task")
-		fmt.Println("4. Exit")
+		fmt.Println("4. Run Schedule")
+		fmt.Println("5. Exit")
 
 		fmt.Print("Select option (1-4):")
 
@@ -47,6 +43,9 @@ func cliLoop(s *scheduler.Scheduler) {
 		case "3":
 			helper.RemoveTask(s)
 		case "4":
+			go s.Start()
+			fmt.Println("Schedule Running...")
+		case "5":
 			fmt.Println("Exiting CLI.")
 			return
 		default:

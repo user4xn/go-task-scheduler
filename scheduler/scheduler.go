@@ -15,7 +15,6 @@ type Task struct {
 }
 
 type Scheduler struct {
-	Tasks     []*Task
 	Database  *Database
 	stopChan  chan struct{}
 	waitGroup sync.WaitGroup

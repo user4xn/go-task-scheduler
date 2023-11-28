@@ -10,7 +10,6 @@ import (
 
 func NewScheduler() *Scheduler {
 	return &Scheduler{
-		Tasks:     make([]*Task, 0),
 		Database:  NewDatabase(),
 		stopChan:  make(chan struct{}),
 		waitGroup: sync.WaitGroup{},

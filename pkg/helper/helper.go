@@ -12,11 +12,14 @@ import (
 
 func AddTask(s *scheduler.Scheduler) {
 	fmt.Println("\nAdd Task:")
+
+	//TASK NAME
 	fmt.Print("Task Name: ")
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
 	taskName := scanner.Text()
 
+	//EXECUTION TIME
 	fmt.Print("Execution Time (2006-01-02 15:04:05): ")
 	scanner.Scan()
 	executionTimeStr := scanner.Text()
@@ -31,9 +34,7 @@ func AddTask(s *scheduler.Scheduler) {
 		return
 	}
 
-	fmt.Println(time.Now().Add(5 * time.Second))
-	fmt.Println(executionTime)
-
+	//INTERVAL
 	fmt.Print("Interval (in seconds, 0 for non-repeated): ")
 	scanner.Scan()
 	intervalStr := scanner.Text()
@@ -43,6 +44,7 @@ func AddTask(s *scheduler.Scheduler) {
 		return
 	}
 
+	//REPEATED
 	fmt.Print("Is Repeated (true/false): ")
 	scanner.Scan()
 	isRepeatedStr := scanner.Text()
