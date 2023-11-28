@@ -13,3 +13,5 @@ go run cmd/main.go
 3. Remove Task - To delete tasks by ID
 4. Run Schedule - To start running schedule ( exect time < now will be immediately runned)
 5. Exit
+
+the function per task was generated automatically, because theres no way to create a function from CLI
